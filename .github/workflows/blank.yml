@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   setup-devhub:
+    runs-on: ubuntu-latest
     steps:
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
