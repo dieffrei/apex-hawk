@@ -1,0 +1,24 @@
+{
+  "name": "apex-hawk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "enviroment:create": "sfdx force:org:create -s -f config/project-scratch-def.json -d 30 --wait 10 --setalias $npm_package_config_scratchOrgDefaultAlias && npm run enviroment:dependencies:install && npm run enviroment:push",
+    "enviroment:dependencies:install": "sfdx texei:package:dependencies:install --noprompt -u $npm_package_config_scratchOrgDefaultAlias",
+    "enviroment:push": "sfdx force:source:push -f -u $npm_package_config_scratchOrgDefaultAlias"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dieffrei/apex-hawk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dieffrei/apex-hawk/issues"
+  },
+  "homepage": "https://github.com/dieffrei/apex-hawk#readme",
+  "config": {
+    "scratchOrgDefaultAlias": "apex-hawk"
+  }
+}

@@ -1,0 +1,4 @@
+@NamespaceAccessible
+public interface IBeforeSaveEntity {
+
+}

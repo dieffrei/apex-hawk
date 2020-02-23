@@ -1,0 +1,16 @@
+{
+  "orgName": "DieSoft",
+  "edition": "Enterprise",
+  "features": [
+    "MultiCurrency"
+  ],
+  "language": "en_US",
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "deploymentSettings": {
+      "doesSkipAsyncApexValidation": true
+    }
+  }
+}
