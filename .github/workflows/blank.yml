@@ -7,6 +7,7 @@ jobs:
   setup-devhub:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
         run: 'echo ${{ secrets.DEV_HUB_SFDXURL}} > ./SFDX_URL_STORE.txt'
