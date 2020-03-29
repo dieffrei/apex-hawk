@@ -3,21 +3,34 @@ name: SFDX Test Run on Push
 on: [push]
 
 jobs:
-  setup-devhub:
+
+  commit-check:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
         run: 'echo ${{ secrets.DEV_HUB_SFDXURL}} > ./SFDX_URL_STORE.txt'
+      - name: 'Display dir'
+        shell: bash
+        run: 'ls'
       - name: 'Authenticate against dev hub'
         uses: forcedotcom/salesforcedx-actions@master
         with:
           args: 'force:auth:sfdxurl:store --sfdxurlfile=./SFDX_URL_STORE.txt --setalias=devhub --setdefaultdevhubusername'
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sfdx-actions/setup-sfdx@v1
+      - name: 'Create scratch org'
+        uses: forcedotcom/salesforcedx-actions@master
         with:
-          sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
-      - name: sfdx-test-run
-        run: sfdx force:apex:test:run -l RunLocalTests -w 30
+          args: 'force:org:create --definitionfile=config/project-scratch-def.json --setalias=scratch-org --setdefaultusername'
+      - name: 'Push source'
+        uses: forcedotcom/salesforcedx-actions@master
+        with:
+          args: 'force:source:push -f'
+      - name: 'Run unit tests'
+        uses: forcedotcom/salesforcedx-actions@master
+        with:
+          args: 'force:apex:test:run -l RunLocalTests -w 30'
+      - name: 'Delete scratch org'
+        uses: forcedotcom/salesforcedx-actions@master
+        with:
+          args: 'force:org:delete --targetusername=scratch-org --noprompt'
