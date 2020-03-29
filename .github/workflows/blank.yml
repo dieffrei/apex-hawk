@@ -10,6 +10,9 @@ jobs:
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
         run: 'echo ${{ secrets.DEV_HUB_SFDXURL}} > ./SFDX_URL_STORE.txt'
+      - name: 'Display dir'
+        shell: bash
+        run: 'ls'
       - name: 'Authenticate against dev hub'
         uses: forcedotcom/salesforcedx-actions@master
         with:
