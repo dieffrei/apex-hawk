@@ -25,7 +25,7 @@ jobs:
       - name: 'Push source'
         uses: forcedotcom/salesforcedx-actions@master
         with:
-          args: 'sfdx force:apex:test:run -l RunLocalTests -w 30'
+          args: 'force:apex:test:run -l RunLocalTests -w 30'
       - name: 'Clean up scratch org'
         uses: forcedotcom/salesforcedx-actions@master
         with:
