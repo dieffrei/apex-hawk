@@ -14,19 +14,14 @@ jobs:
         uses: forcedotcom/salesforcedx-actions@master
         with:
           args: 'force:auth:sfdxurl:store --sfdxurlfile=./SFDX_URL_STORE.txt --setalias=devhub --setdefaultdevhubusername'
-
-  run-unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sfdx-actions/setup-sfdx@v1
+      - name: 'Create scratch org'
+        uses: forcedotcom/salesforcedx-actions@master
         with:
-          sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
-      - name: sfdx-test-run
-        run: sfdx force:apex:test:run -l RunLocalTests -w 30
-
-  delete-scratch-org:
-    runs-on: ubuntu-latest
-    steps:
+          args: 'force:org:create --definitionfile=config/project-scratch-def.json --setalias=scratch-org --setdefaultusername'
+      - name: 'Push source'
+        uses: forcedotcom/salesforcedx-actions@master
+        with:
+          args: 'sfdx force:apex:test:run -l RunLocalTests -w 30'
       - name: 'Clean up scratch org'
         uses: forcedotcom/salesforcedx-actions@master
         with:
