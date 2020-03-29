@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  setup-devhub:
+  commit-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -25,8 +25,12 @@ jobs:
       - name: 'Push source'
         uses: forcedotcom/salesforcedx-actions@master
         with:
+          args: 'force:source:push -f'
+      - name: 'Run unit tests'
+        uses: forcedotcom/salesforcedx-actions@master
+        with:
           args: 'force:apex:test:run -l RunLocalTests -w 30'
-      - name: 'Clean up scratch org'
+      - name: 'Delete scratch org'
         uses: forcedotcom/salesforcedx-actions@master
         with:
           args: 'force:org:delete --targetusername=scratch-org --noprompt'
