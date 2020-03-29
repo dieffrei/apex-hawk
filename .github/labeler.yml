@@ -1,0 +1,31 @@
+apex-code:
+  - force-app/main/default/classes/**/*
+  - force-app/main/default/triggers/**/*
+
+unit-test:
+  - force-app/main/default/test/**/*
+
+database:
+  - force-app/main/default/object/**/*
+
+ui:
+  - force-app/main/default/layouts/**/*
+  - force-app/main/default/aura/**/*
+
+sharing:
+  - force-app/main/default/profiles/**/*
+  - force-app/main/default/permissionsets/**/*
+
+configuration:
+  - .github/**/*
+  - .circleci/**/*
+  - package.json
+  - config/**/*
+
+tooling:
+  - scripts/**/*
+  - sample-data/**/*
+  - e2e/**/*
+
+documentation:
+  - docs/**/*
