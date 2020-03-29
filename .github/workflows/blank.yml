@@ -32,8 +32,6 @@ jobs:
           args: 'force:apex:test:run -c -d ./test-result -r json --wait 20'
       - name: 'Upload test results'
         uses: codecov/codecov-action@v1
-        with:
-          file: ./test-result
       - name: 'Delete scratch org'
         uses: forcedotcom/salesforcedx-actions@master
         with:
