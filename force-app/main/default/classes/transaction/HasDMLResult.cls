@@ -1,5 +1,5 @@
 /**
- * Template class which defines that class contains Entity Errors
+ * Template class which defines that class contains Entity DML operation results
  */
 @NamespaceAccessible
 public abstract inherited sharing class HasDMLResult implements IHasDMLResult {
