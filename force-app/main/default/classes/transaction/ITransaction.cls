@@ -56,4 +56,6 @@ public interface ITransaction {
      * @return
      */
     ITransaction verboseMode();
+
+    void clear();
 }

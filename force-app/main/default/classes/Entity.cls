@@ -73,7 +73,6 @@ public abstract inherited sharing class Entity implements IEntity, IObservable, 
     }
 
 
-
     public SObjectType getSObjectType() {
         return this.sObjectType;
     }
@@ -104,7 +103,7 @@ public abstract inherited sharing class Entity implements IEntity, IObservable, 
         this.errors.add(new EntityError(ex.getMessage()));
     }
 
-    public void addError(EntityException ex){
+    public void addError(EntityException ex) {
         this.errors.add(new EntityError(ex));
     }
 
@@ -123,6 +122,18 @@ public abstract inherited sharing class Entity implements IEntity, IObservable, 
 
     public Id getId() {
         return this.id;
+    }
+
+    public Id getOwnerId() {
+        return (Id) this.get('OwnerId');
+    }
+
+    public Boolean isOwner() {
+        return UserInfo.getUserId() == this.get('OwnerId');
+    }
+
+    public Boolean isOwner(Id userOrGroupId) {
+        return userOrGroupId == this.get('OwnerId');
     }
 
     /**
@@ -175,12 +186,12 @@ public abstract inherited sharing class Entity implements IEntity, IObservable, 
     protected void put(SObjectField field, Object value) {
         // just in case if field was not queried
         // and prevent non queried field exception
-        if (!this.record.getPopulatedFieldsAsMap().containsKey(String.valueOf(field))){
+        if (this.record.getPopulatedFieldsAsMap().containsKey(String.valueOf(field))) {
             if (this.record.get(field) != value) {
                 this.fireEvent(new EntityChangeSobjectFieldValueEvent(field, this.record.get(field), value));
             }
         } else {
-            this.fireEvent(new EntityChangeSobjectFieldValueEvent(field, this.record.get(field), value));
+            this.fireEvent(new EntityChangeSobjectFieldValueEvent(field, null, value));
         }
         this.record.put(field, value);
     }

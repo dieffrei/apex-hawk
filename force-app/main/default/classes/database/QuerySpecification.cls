@@ -11,8 +11,21 @@ public abstract inherited sharing class QuerySpecification extends fflib_SObject
         this.queryFactory = this.getBaseQueryFactory();
     }
 
+    public QuerySpecification(IEntityBuilder entityBuilder, Boolean enforceCRUD, Boolean enforceFLS) {
+        super(false, enforceCRUD, enforceFLS);
+        this.queryFactory = this.getBaseQueryFactory();
+        this.entityBuilder = entityBuilder;
+    }
+
     public QuerySpecification(IEntityBuilder entityBuilder) {
         this();
+        this.queryFactory = this.getBaseQueryFactory();
+        this.entityBuilder = entityBuilder;
+    }
+
+    public QuerySpecification(IEntityBuilder entityBuilder, Boolean includeFieldSetFields) {
+        super(includeFieldSetFields, true, false);
+        this.queryFactory = this.getBaseQueryFactory();
         this.entityBuilder = entityBuilder;
     }
 

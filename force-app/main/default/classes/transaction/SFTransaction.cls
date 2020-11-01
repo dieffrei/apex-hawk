@@ -63,7 +63,7 @@ public virtual inherited sharing class SFTransaction implements ITransaction {
     /**
      * Clear all pending DML Commands
      */
-    private void clear() {
+    public void clear() {
         this.entitiesToInsert = new DMLCommandCollection();
         this.entitiesToUpdate = new DMLCommandCollection();
         this.entitiesToDelete = new DMLCommandCollection();

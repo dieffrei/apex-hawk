@@ -1,8 +1,12 @@
+/**
+* @description Transaction exception
+*/
 public inherited sharing class TransactionException extends Exception {
 
-    public Map<IEntity, DMLResultItem> result {get; protected set;}
+    public Map<IEntity, DMLResultItem> dmlResult {get; protected set;}
 
-    public TransactionException(Map<IEntity, DMLResultItem> result){
-        this.setMessage('Error to commit to database. ' + result);
+    public TransactionException(Map<IEntity, DMLResultItem> dmlResult){
+        this.dmlResult = dmlResult;
+        this.setMessage('One or more records failed to commit to database.');
     }
 }

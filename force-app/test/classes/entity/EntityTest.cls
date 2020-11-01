@@ -1,6 +1,73 @@
 @IsTest
 private class EntityTest {
 
+    private static final String CUSTOMER_NAME_SHOULD_HAVE_MORE_THAN_9_CHARS = 'Customer name should have more than 9 characters {0}';
+    private static final String CUSTOMER_NAME_IS_REQUIRED = 'CUSTOMER_NAME_IS_REQUIRED';
+
+    private class NameGreaterThan9CharsValidator implements IValidator, IBeforeCreateEntity, IBeforeSaveEntity {
+
+        private CustomerEntity customer;
+
+        public NameGreaterThan9CharsValidator(CustomerEntity customer) {
+            this.customer = customer;
+        }
+
+        public SObjectValidationResult validate() {
+            if (this.customer.name != null) {
+                return new SObjectValidationResult((this.customer.name.length() > 9),
+                    new List<String>{
+                        'Name'
+                    },
+                    CUSTOMER_NAME_SHOULD_HAVE_MORE_THAN_9_CHARS
+                );
+            } else {
+                return new SObjectValidationResult(false,
+                    new List<String>{
+                        'Name'
+                    },
+                    String.format(CUSTOMER_NAME_IS_REQUIRED, new List<String>{
+                        this.customer.name
+                    }));
+            }
+        }
+
+    }
+
+    private class CustomerEntity extends Entity {
+
+        public String name {
+            get {
+                return (String) super.get(Account.Name);
+            }
+        }
+
+        public CustomerEntity() {
+            super(Account.SObjectType);
+        }
+
+        public CustomerEntity(Account record) {
+            super(record);
+        }
+
+        public CustomerEntity(SObjectType sObjectType, String recordTypeName) {
+            super(sObjectType, recordTypeName);
+        }
+
+        override
+        protected void setupValidation() {
+            this.addValidator(new NameGreaterThan9CharsValidator(this));
+        }
+
+        public void namedAs(String name) {
+            this.put(Account.Name, name);
+        }
+
+        public void sourceFrom(String source) {
+            this.put(Account.AccountSource, source);
+        }
+
+    }
+
     @IsTest
     public static void constructor_ValidSObject_InitPrivateVars() {
         CustomerEntity entity = new CustomerEntity();
@@ -47,7 +114,7 @@ private class EntityTest {
     }
 
     @IsTest
-    public static void constructor_CreateNewRecord_IsDirty(){
+    public static void constructor_CreateNewRecord_IsDirty() {
         CustomerEntity entity = new CustomerEntity();
         System.assertEquals(true, entity.isDirty());
     }
@@ -65,10 +132,9 @@ private class EntityTest {
     public static void put_InvalidField_ThrowSObjectException() {
         CustomerEntity entity = new CustomerEntity();
         try {
-            entity.put(Contact.Name, 234);
-            System.assert(false, 'Expected SObjectException');
+            entity.put(Account.BillingStreet, 'Long Avenue');
         } catch (SObjectException ex) {
-
+            System.assert(false, 'Do not expect SObjectException');
         }
     }
 
@@ -166,7 +232,7 @@ private class EntityTest {
     }
 
     @IsTest
-    public static void isChanged_ChangeField_NumChangesCorrect(){
+    public static void isChanged_ChangeField_NumChangesCorrect() {
 
         String name = 'Carlos';
         String source = 'Site';
@@ -188,8 +254,16 @@ private class EntityTest {
     }
 
     @IsTest
-    public static void toString_not_null() {
-        System.assertNotEquals(null, new CustomerEntity(new Account(Name = 'My name')).toString());
-        System.assertNotEquals(null, new CustomerEntity().toString());
+    public static void isOwner_CurrentUser() {
+        CustomerEntity customer = new CustomerEntity(new Account(OwnerId = UserInfo.getUserId()));
+        System.assertEquals(true, customer.isOwner());
+        System.assertEquals(true, customer.isOwner(UserInfo.getUserId()));
+        System.assertEquals(false, customer.isOwner(fflib_IDGenerator.generate(User.SObjectType)));
+    }
+
+    @IsTest
+    public static void getOwnerId_ReturnsOwnerId() {
+        CustomerEntity customer = new CustomerEntity(new Account(OwnerId = UserInfo.getUserId()));
+        System.assertEquals(UserInfo.getUserId(), customer.getOwnerId());
     }
 }
