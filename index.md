@@ -175,7 +175,6 @@ How to persist an entity instance state?
             });
         }
     }
-    
     ```
 - #### Retrieving a domain object state
     - ### Query Specifications
