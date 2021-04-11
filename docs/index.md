@@ -58,7 +58,7 @@ public virtual inherited sharing class SaleOpportunity extends Entity {
 ### Repositories
 Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects. 
 A mechanism for encapsulating storage, retrieval, and search behavior which emulates a collection of objects
-- #### Repository interfaces
+#### Repository interfaces
 Abstract the way you interact with persistense, it provides a way that usually you can inject different repository implementations either cache or mock.
   ```apex
   public interface SaleOpportunityRepository {
@@ -69,7 +69,7 @@ Abstract the way you interact with persistense, it provides a way that usually y
       void remove(ITransaction sfTransaction, List<SaleOpportunity> saleOpportunities);
   } 
   ```
-- #### Repository Implementation
+#### Repository Implementation
 ```apex
 public virtual inherited sharing class SaleOpportunityRepositoryImpl implements SaleOpportunityRepository {
 
