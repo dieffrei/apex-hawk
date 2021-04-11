@@ -1,7 +1,6 @@
 # Salesforce Apex Hawk
 
-The purpose of apex hawk is to facilitate code best practices SOLID principles.
-It was born in an attempt to apply Domain Driven Design concepts.
+The purpose of apex hawk is to facilitate code best practices. It was born in an attempt to apply Domain Driven Design concepts.
 
 ## Building blocks
 An application can be composed by smaller chunks and is called building blocks:
