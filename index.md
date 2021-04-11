@@ -158,9 +158,6 @@ How to persist an entity instance state?
   To persist a Domain object to database use ```SFTransaction``` it works similar as fflib_SObjectUnitOfWork.
 - #### Creating your Transaction
 ```apex
-/**
- * Manages transactions
- */
 public inherited sharing class TransactionFactory implements ITransactionFactory {
 
     /**
