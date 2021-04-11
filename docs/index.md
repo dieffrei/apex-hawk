@@ -180,7 +180,7 @@ new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
 In the code above, Opportunities will be inserted/updated/upserted/deleted before OpportunityLineItems.
 ```
 - #### Retrieving a domain object state
-    - ### Query Specifications
+- ### Query Specifications
 - #### Persisting a domain object state
 ```apex    
     // initialize salesforce transaction
