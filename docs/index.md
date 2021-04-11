@@ -199,16 +199,16 @@ In the code above, Opportunities will be inserted/updated/upserted/deleted befor
     // commit is a keyword so method has Z as suffix    
     salesforceTransaction.commitZ();
 ```
-- #### Orchestrating and composing transactions
+- #### Sharing transaction between services
   To provide better orchestration of persistence, provide for your methods transaction parameters.
 ```apex
     SFTransaction salesforceTransaction;
     {
-        new CustomerService()
-            .createCustomer(salesforceTransaction);
+        Customer customer = new CustomerService()
+            .createCustomer(customerInfo, salesforceTransaction);
         
         new OrderService()
-            .createCustomer(salesforceTransaction);
+            .createOrder(customer, salesforceTransaction);
     }
     salesforceTransaction.commitZ();
 ```
