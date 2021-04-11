@@ -2,11 +2,10 @@
 
 The purpose of apex hawk is to facilitate code best practices. It was born in an attempt to apply Domain Driven Design concepts.
 
-## Building blocks
-An application can be composed by smaller chunks and is called building blocks:
+## Implementing Building blocks
 
-- ### Domains objects
-  Domain object are abstractions on top of SObjects.
+- ### Entities
+  Entity object are abstractions on top of SObjects.
   To create a Domain object just extend Entity class.
   Entity instances are persisted to database using SFTransaction (ApexHawk UnitOfWork implementation).
   Only changed field values are persisted to database.
