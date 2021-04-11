@@ -13,62 +13,62 @@ The purpose of apex hawk is to facilitate code best practices and DDD principles
 
 ## Implementing Building blocks
 
-- ### Entities
-  Entity object are abstractions on top of SObjects.
-  To create a Domain object just extend Entity class.
-  Entity instances are persisted to database using SFTransaction (ApexHawk UnitOfWork implementation).
-  Only changed field values are persisted to database.
-  It is possible since entity classes implements Observer pattern.
+### Entities
+Entity object are abstractions on top of SObjects.
+To create a Domain object just extend Entity class.
+Entity instances are persisted to database using SFTransaction (ApexHawk UnitOfWork implementation).
+Only changed field values are persisted to database.
+It is possible since entity classes implements Observer pattern.
 
-    ```apex
-    public virtual inherited sharing class SaleOpportunity extends Entity {
-    
-      public List<SaleOpportunityLineItem> items { public get; protected set; }
-    
-      protected SaleOpportunity() {
-        super(Opportunity.SObjectType);
-        this.items = new List<SaleOpportunityLineItem>();
-      }
-    
-      protected SaleOpportunity(Opportunity record) {
-        super(record);
-        this.items = new List<SaleOpportunityLineItem>();
-        for (OpportunityLineItem item : record.OpportunityLineItems) {
-            this.items.add(new SaleOpportunityLineItem(item));
-        }
-      }
-    
-      public void applyDiscount(Decimal factor) {
-        for (SaleOpportunityLineItem item : items) {
-            item.applyDiscount(factor);
-        }
-      }
-    
-      public Decimal getTotalValue() {
-        Decimal totalValue = 0;
-        for (SaleOpportunityLineItem item : items) {
-            totalValue = totalValue + item.getTotalPrice();
-        }
-        return totalValue;
-      }
-    
+```apex
+public virtual inherited sharing class SaleOpportunity extends Entity {
+
+  public List<SaleOpportunityLineItem> items { public get; protected set; }
+
+  protected SaleOpportunity() {
+    super(Opportunity.SObjectType);
+    this.items = new List<SaleOpportunityLineItem>();
+  }
+
+  protected SaleOpportunity(Opportunity record) {
+    super(record);
+    this.items = new List<SaleOpportunityLineItem>();
+    for (OpportunityLineItem item : record.OpportunityLineItems) {
+        this.items.add(new SaleOpportunityLineItem(item));
     }
-    ```
+  }
 
-- ### Repositories
-  Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects. 
-  A mechanism for encapsulating storage, retrieval, and search behavior which emulates a collection of objects
-    - #### Repository interfaces
-      Abstract the way you interact with persistense, it provides a way that usually you can inject different repository implementations either cache or mock.
-        ```apex
-        public interface SaleOpportunityRepository {
-            SaleOpportunityQuerySpec find();
-            Map<Id, SaleOpportunity> getById(List<Id> saleOpportunityIds);
-            void save(ITransaction sfTransaction, SaleOpportunity salesOpportunity);
-            void save(ITransaction sfTransaction, List<SaleOpportunity> saleOpportunities);
-            void remove(ITransaction sfTransaction, List<SaleOpportunity> saleOpportunities);
-        } 
-        ```
+  public void applyDiscount(Decimal factor) {
+    for (SaleOpportunityLineItem item : items) {
+        item.applyDiscount(factor);
+    }
+  }
+
+  public Decimal getTotalValue() {
+    Decimal totalValue = 0;
+    for (SaleOpportunityLineItem item : items) {
+        totalValue = totalValue + item.getTotalPrice();
+    }
+    return totalValue;
+  }
+
+}
+```
+
+### Repositories
+Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects. 
+A mechanism for encapsulating storage, retrieval, and search behavior which emulates a collection of objects
+  - #### Repository interfaces
+    Abstract the way you interact with persistense, it provides a way that usually you can inject different repository implementations either cache or mock.
+      ```apex
+      public interface SaleOpportunityRepository {
+          SaleOpportunityQuerySpec find();
+          Map<Id, SaleOpportunity> getById(List<Id> saleOpportunityIds);
+          void save(ITransaction sfTransaction, SaleOpportunity salesOpportunity);
+          void save(ITransaction sfTransaction, List<SaleOpportunity> saleOpportunities);
+          void remove(ITransaction sfTransaction, List<SaleOpportunity> saleOpportunities);
+      } 
+      ```
     - #### Repository Implementation
         ```apex
         public virtual inherited sharing class SaleOpportunityRepositoryImpl implements SaleOpportunityRepository {
@@ -123,40 +123,40 @@ The purpose of apex hawk is to facilitate code best practices and DDD principles
         
         } 
         ```
-- ### Query Specifications
-  Low level api to query sobject records (It uses fflib query factory + selector)
+### Query Specifications
+Low level api to query sobject records (It uses fflib query factory + selector)
 
-- ### Application Services
-  Communicates aggregate roots, performs complex use cases, cross aggregates transaction. An operation offered as an interface that stands alone in the model, with no encapsulated state.
-    ```apex
-    public interface SaleOpportunityService {
-        Map<Id, SaleOpportunity> getById(List<Id> opportunityIds);
-        void applyDiscount(ITransaction salesforceTransaction, List<Id> opportunityIds, Decimal factor);
+### Application Services
+Communicates aggregate roots, performs complex use cases, cross aggregates transaction. An operation offered as an interface that stands alone in the model, with no encapsulated state.
+```apex
+public interface SaleOpportunityService {
+    Map<Id, SaleOpportunity> getById(List<Id> opportunityIds);
+    void applyDiscount(ITransaction salesforceTransaction, List<Id> opportunityIds, Decimal factor);
+}
+```
+```apex
+public inherited sharing class SaleOpportunityServiceImpl implements SaleOpportunityService {
+
+    private SaleOpportunityRepository saleOpportunityRepository;
+
+    public SaleOpportunityServiceImpl() {
+        this.saleOpportunityRepository = (SaleOpportunityRepository) Injector.getInstance(SaleOpportunityRepository.class);
     }
-    ```
-    ```apex
-    public inherited sharing class SaleOpportunityServiceImpl implements SaleOpportunityService {
-    
-        private SaleOpportunityRepository saleOpportunityRepository;
-    
-        public SaleOpportunityServiceImpl() {
-            this.saleOpportunityRepository = (SaleOpportunityRepository) Injector.getInstance(SaleOpportunityRepository.class);
-        }
-    
-        public Map<Id, SaleOpportunity> getById(List<Id> opportunityIds) {
-            return this.saleOpportunityRepository.getById(opportunityIds);
-        }
-    
-        public void applyDiscount(ITransaction salesforceTransaction, List<Id> opportunityIds, Decimal factor) {
-            Map<Id, SaleOpportunity> opportunities = this.saleOpportunityRepository.getById(opportunityIds);
-            for (SaleOpportunity opportunity : opportunities.values()) {
-                opportunity.applyDiscount(factor);
-                saleOpportunityRepository.save(salesforceTransaction, opportunity);
-            }
-        }
-    
+
+    public Map<Id, SaleOpportunity> getById(List<Id> opportunityIds) {
+        return this.saleOpportunityRepository.getById(opportunityIds);
     }
-    ```
+
+    public void applyDiscount(ITransaction salesforceTransaction, List<Id> opportunityIds, Decimal factor) {
+        Map<Id, SaleOpportunity> opportunities = this.saleOpportunityRepository.getById(opportunityIds);
+        for (SaleOpportunity opportunity : opportunities.values()) {
+            opportunity.applyDiscount(factor);
+            saleOpportunityRepository.save(salesforceTransaction, opportunity);
+        }
+    }
+
+}
+```
 
 ### Persistence
 How to persist an entity instance state?
