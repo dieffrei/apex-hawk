@@ -156,7 +156,7 @@ How to persist an entity instance state?
 - #### Transaction / Unit of work
   Martin Fowler definition for Unit of work pattern is "Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems."
   To persist a Domain object to database use ```SFTransaction``` it works similar as fflib_SObjectUnitOfWork.
-- ### Creating your Transaction
+- #### Creating your Transaction
     ```apex
     /**
      * Manages transactions
@@ -177,10 +177,10 @@ How to persist an entity instance state?
     }
     
     ```
-- ### Retrieving a domain object state
+- #### Retrieving a domain object state
     - ### Query Specifications
 
-- ### Persisting a domain object state
+- #### Persisting a domain object state
 ```apex    
     // initialize salesforce transaction
     SFTransaction salesforceTransaction = new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
@@ -198,7 +198,7 @@ How to persist an entity instance state?
     // commit is a keyword so method has Z as suffix    
     salesforceTransaction.commitZ();
 ```
-- ### Orchestrating and composing transactions
+- #### Orchestrating and composing transactions
   To provide better orchestration of persistence, provide for your methods transaction parameters.
 ```apex
     SFTransaction salesforceTransaction;
