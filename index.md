@@ -160,10 +160,10 @@ How to persist an entity instance state?
   ```SFTransaction``` constructor map parameter let you define per Object an DML implementation.
   It allows to for a edge cases implement a special way to insert/upsert/delete records from database.
 ```apex
-      new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
-        Opportunity.SObjectType => new SObjectDMLSettings(Opportunity.SObjectType),
-        OpportunityLineItem.SObjectType => new SObjectDMLSettings(OpportunityLineItem.SObjectType)
-    });
+new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
+    Opportunity.SObjectType => new SObjectDMLSettings(Opportunity.SObjectType),
+    OpportunityLineItem.SObjectType => new SObjectDMLSettings(OpportunityLineItem.SObjectType)
+});
 ```
 - #### Retrieving a domain object state
     - ### Query Specifications
