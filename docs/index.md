@@ -55,6 +55,38 @@ public virtual inherited sharing class SaleOpportunity extends Entity {
 }
 ```
 
+```apex
+global virtual inherited sharing class SaleOpportunityLineItem extends Entity {
+
+    protected SaleOpportunityLineItem() {
+        super(OpportunityLineItem.SObjectType);
+    }
+
+    public SaleOpportunityLineItem(OpportunityLineItem record) {
+        super(record);
+    }
+
+    public void applyDiscount(Decimal factor) {
+        Decimal unitPrice = (Decimal) get(OpportunityLineItem.UnitPrice);
+        put(OpportunityLineItem.UnitPrice, unitPrice - ((unitPrice / 100) * (factor)));
+    }
+
+    public Decimal getUnitPrice() {
+        return (Decimal) get(OpportunityLineItem.UnitPrice);
+    }
+
+    public Decimal getQuantity() {
+        return (Decimal) get(OpportunityLineItem.Quantity);
+    }
+
+    public Decimal getTotalPrice() {
+        return (Decimal) get(OpportunityLineItem.UnitPrice) * (Decimal) get(OpportunityLineItem.Quantity);
+    }
+
+}
+
+```
+
 ### Repositories
 Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects. 
 A mechanism for encapsulating storage, retrieval, and search behavior which emulates a collection of objects
