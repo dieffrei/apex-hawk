@@ -159,6 +159,7 @@ How to persist an entity instance state?
 - #### Creating a Transaction
   ```SFTransaction``` constructor map parameter let you define per Object an DML implementation.
   It allows to for a edge cases implement a special way to insert/upsert/delete records from database.
+
   *DML executions are executed by object and the execution order as defined on parameter keySet .* 
 ```apex
 new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
@@ -200,3 +201,4 @@ In the code above, Opportunities will be inserted/updated/upserted/deleted befor
     }
     salesforceTransaction.commitZ();
 ```
+<a href="entities.html">Entities</a>
