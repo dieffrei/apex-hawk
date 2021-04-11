@@ -165,6 +165,7 @@ new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
     Opportunity.SObjectType => new SObjectDMLSettings(Opportunity.SObjectType),
     OpportunityLineItem.SObjectType => new SObjectDMLSettings(OpportunityLineItem.SObjectType)
 });
+In the code above, Opportunities will be inserted/updated/upserted/deleted before OpportunityLineItems.
 ```
 - #### Retrieving a domain object state
     - ### Query Specifications
