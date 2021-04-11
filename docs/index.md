@@ -1,4 +1,4 @@
-<nav class="nav-primary" role="navigation" >
+<!--nav class="nav-primary" role="navigation" >
     <ul>
         {% for p in site.pages %}
         <li>
@@ -6,7 +6,7 @@
         </li>
         {% endfor %}
     </ul>
-</nav>
+</nav-->
 
 # Salesforce Apex Hawk 
 The purpose of apex hawk is to facilitate code best practices and DDD principles.
