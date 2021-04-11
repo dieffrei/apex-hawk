@@ -212,4 +212,3 @@ In the code above, Opportunities will be inserted/updated/upserted/deleted befor
     }
     salesforceTransaction.commitZ();
 ```
-<a href="entities.html">Entities</a>
