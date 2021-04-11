@@ -165,7 +165,6 @@ How to persist an entity instance state?
 ```
 - #### Retrieving a domain object state
     - ### Query Specifications
-
 - #### Persisting a domain object state
 ```apex    
     // initialize salesforce transaction
