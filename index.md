@@ -157,6 +157,8 @@ How to persist an entity instance state?
   Martin Fowler definition for Unit of work pattern is "Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems."
   To persist a Domain object to database use ```SFTransaction``` it works similar as fflib_SObjectUnitOfWork.
 - #### Creating a Transaction
+  ```SFTransaction``` constructor map parameter let you define per Object an DML implementation.
+  It allows to for a edge cases implement a special way to insert/upsert/delete records from database.
 ```apex
       new SFTransaction(new Map<Schema.SObjectType, SObjectDMLSettings>{
         Opportunity.SObjectType => new SObjectDMLSettings(Opportunity.SObjectType),
