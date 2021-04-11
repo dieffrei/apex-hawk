@@ -1,6 +1,5 @@
 # Salesforce Apex Hawk 
-The purpose of apex hawk is to facilitate code best practices.
-It facilitates DDD principles.
+The purpose of apex hawk is to facilitate code best practices and DDD principles.
 
 ## Implementing Building blocks
 
